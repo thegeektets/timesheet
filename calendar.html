@@ -62,7 +62,8 @@
 
          currentDate.setDate(currentDate.getDate()+1); 
     }
- 
+    
+
      return [
      result,
      resultmonth,
@@ -409,15 +410,38 @@
 
   
 $(document).ready(function(){
-       var month = 9;
-       var days = getWorkingDays(month);
+        var days ={};
+
+       //days
+       days[0] = ['21','22','23','25','1'];
+       months = ['Jan','Feb'];
+       years =['2015'];
+      
+       days[1] = {};
+       days[2] = {};
+
+
+       for (var i = 0; i < days[0].length; i++) {
+
+          if(days[0][i] >= 21){
+
+           days[1][i] = months[0];
+           days[2][i] = years[0];
+
+          }
+          else{
+            days[1][i] = months[1];
+            days[2][i] = years[1];
+ 
+          }
+       };
+      
        createTable(days,projects,projectids);
 
 });
 
 
 </script>
-</body>
 <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="script.js"></script>
+
 </html>
