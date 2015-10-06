@@ -220,7 +220,7 @@
             }
           //training days
           if(i == (projectids.length+6) && q < days.length && j >2 ){
-               td.innerHTML = '<input type="checkbox" style="width:30px;" id="'+days[q]+'" name="'+projectids[i-2]+'_'+days[q]+'" onclick = "disable_training('+days[q]+')"></input>';
+               td.innerHTML = '<input type="checkbox" style="width:30px;" class="training'+days[q]+'" id="'+days[q]+'" name="'+projectids[i-2]+'_'+days[q]+'" onclick = "disable_training('+days[q]+')"></input>';
            q++;
           }
          //total hours  
@@ -241,6 +241,7 @@
  }
 
  var flag = false;
+ var tag;
 
  function disable_training (id_tag) {
 
@@ -268,9 +269,35 @@
               $(this).val('');
           });
         
-         flag = true;    
+         flag = true;
+         tag = id_tag;    
+      } 
+       else if(flag == true && tag != id_tag){
+
+         $(".td_"+id_tag).each(function() {
+                    $(this).css({ background : "red" });
+         });
+         $(".txt_"+id_tag).each(function() {
+                    $(this).prop('disabled', true)
+         });
+         $(".total_hrs"+id_tag).each(function() {
+                    $(this).prop('disabled', true)
+         });
+         $(".txt_"+id_tag).each(function() {
+
+            
+              $(this).val('');
+          });
+          $(".total_hrs"+id_tag).each(function() {
+
+            
+              $(this).val('');
+          });
+        
+         flag = true;
+         tag = id_tag;    
       }  
-      else{
+      else if(flag == true && tag == id_tag){
          $(".td_"+id_tag).each(function() {
                     $(this).css({ background : "" });
          });
@@ -280,9 +307,11 @@
          $(".total_hrs"+id_tag).each(function() {
                     $(this).prop('disabled', false)
          });
-         flag = false;    
+         flag = false; 
+
         
       }
+
 
  }
 
@@ -348,6 +377,9 @@
                             $(this).prop('disabled', true)
                  });
                  $(".total_hrs"+days[r]).each(function() {
+                            $(this).prop('disabled', true)
+                 });
+                 $(".training"+days[r]).each(function() {
                             $(this).prop('disabled', true)
                  });
 
