@@ -198,7 +198,7 @@
 
 
 
-           td.innerHTML = '<input type="text"  style="width:30px;" class="project_hrs'+projectids[i-2]+'" id="'+projectids[i-2]+'"></input>';
+           td.innerHTML = '<input type="text"  style="width:30px;" class="project_hrs'+projectids[i-2]+'" ></input>';
            // td id attribute
            td.setAttribute("class", "project_ttl");
          
@@ -221,7 +221,7 @@
             }
           //training days
           if(i == (projectids.length+6) && q < days.length && j >2 ){
-               td.innerHTML = '<input type="checkbox" style="width:30px;" class="training'+days[q]+'" id="'+days[q]+'" name="'+projectids[i-2]+'_'+days[q]+'" onclick = "disable_training('+days[q]+')"></input>';
+               td.innerHTML = '<input type="checkbox" style="width:30px;" class="training'+days[q]+'" id="'+days[q]+'" name="'+projectids[i-2]+'_'+days[q]+'" onclick = "disable_training('+days[q]+')" value="false"></input>';
            q++;
           }
          //total hours  
@@ -241,16 +241,20 @@
       check_holidays(days);
  }
 
- var flag = false;
  var tag;
 
  function disable_training (id_tag) {
 
-         console.log('disable_training');
-        
-      if(flag == false){
+      var flag;
+      
+      $(".training"+id_tag).each(function() {
+             flag =  $(this).val();
 
-         $(".td_"+id_tag).each(function() {
+         });
+
+        
+      if(flag == 'false'){
+          $(".td_"+id_tag).each(function() {
                     $(this).css({ background : "red" });
          });
          $(".txt_"+id_tag).each(function() {
@@ -269,36 +273,13 @@
             
               $(this).val('');
           });
+           $(".training"+id_tag).each(function() {
+              $(this).val('true');
+         });
+
         
-         flag = true;
-         tag = id_tag;    
-      } 
-       else if(flag == true && tag != id_tag){
-
-         $(".td_"+id_tag).each(function() {
-                    $(this).css({ background : "red" });
-         });
-         $(".txt_"+id_tag).each(function() {
-                    $(this).prop('disabled', true)
-         });
-         $(".total_hrs"+id_tag).each(function() {
-                    $(this).prop('disabled', true)
-         });
-         $(".txt_"+id_tag).each(function() {
-
-            
-              $(this).val('');
-          });
-          $(".total_hrs"+id_tag).each(function() {
-
-            
-              $(this).val('');
-          });
-        
-         flag = true;
-         tag = id_tag;    
-      }  
-      else if(flag == true && tag == id_tag){
+       } 
+       else if(flag == 'true'){
          $(".td_"+id_tag).each(function() {
                     $(this).css({ background : "" });
          });
@@ -308,8 +289,11 @@
          $(".total_hrs"+id_tag).each(function() {
                     $(this).prop('disabled', false)
          });
-         flag = false; 
 
+        $(".training"+id_tag).each(function() {
+              $(this).val('false');
+         });
+         
         
       }
 
@@ -317,22 +301,27 @@
  }
 
 
-
  //total per project
  function total_perproject (project_id) {
-   var  total = 0;
    
+ var  total = 0;
+ 
          $('input[id="'+project_id+'"]').each(function() {
+
             var thisval = $(this).val();
+            console.log(thisval);
+
             if(thisval == ''){
                 thisval = 0;
             }
+            console.log("input"+thisval);
 
             total = (total + parseInt(thisval));
 
             $(".totals_project").val(total);
 
          });
+
    $(".project_hrs"+project_id).val(""+total);
  }
   //total per day 
@@ -358,8 +347,7 @@
             }
 
          });
-   console.log("perday"+total);
-
+ 
    $(".total_hrs"+id_tag).val(""+total);
 }
 
